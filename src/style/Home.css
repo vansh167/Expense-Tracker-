@@ -3,7 +3,7 @@ body{
 }
 .home-container {
   margin-top: 60px;
-  min-height: 100vh;;
+  min-height: 100%;;
   margin-left: 10%;
   padding-left: 150px;
   width: 78%;

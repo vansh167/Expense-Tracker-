@@ -2,14 +2,13 @@
 
 /* Page container styling */
 .tracker-container {
-  height:140%;
   padding-left: 31%;
-  background: rgb(212, 215, 249);
+  background: rgba(212, 215, 249, 0.459);
   display: flex;
   flex-direction: column;
   gap: 30px;
   margin-top: -8px;
-    margin-right: -7px;
+  margin-right: -7px;
 }
 
 body.dark-mode .tracker-container {
