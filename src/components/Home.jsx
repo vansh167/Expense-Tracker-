@@ -1,6 +1,6 @@
 import React from 'react';
 import '../style/Home.css';
-import PieActiveArc from './oieActiveAc';
+import PieActiveArc from './PieActiveAc';
 import IncomeExpenseBarChart from './Chat';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable'; // ✅ Corrected
