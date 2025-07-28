@@ -7,12 +7,21 @@ const ExpenseTracker = ({ addTransaction, incomeCategories, expenseCategories })
     Expense: expenseCategories,
   };
 
+const paymentMethods = [
+  { label: '💵 Cash', value: 'Cash' },
+  { label: '💳 Card', value: 'Card' },
+  { label: '🔁 UPI', value: 'UPI' },
+  { label: '🏦 Bank Transfer', value: 'Bank Transfer' },
+];
+
+
   const [form, setForm] = useState({
     type: 'Expense',
     category: '',
     amount: '',
     description: '',
-    date: '',  // <-- added date field here
+    date: '',
+    paymentMethod: '',
   });
 
   const handleChange = (e) => {
@@ -28,8 +37,8 @@ const ExpenseTracker = ({ addTransaction, incomeCategories, expenseCategories })
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Require category, amount, and date
-    if (!form.category || !form.amount || !form.date) return;
+    // Required fields
+    if (!form.category || !form.amount || !form.date || !form.paymentMethod) return;
 
     const newTransaction = {
       ...form,
@@ -38,12 +47,14 @@ const ExpenseTracker = ({ addTransaction, incomeCategories, expenseCategories })
 
     addTransaction(newTransaction);
 
+    // Reset form
     setForm({
       type: 'Expense',
       category: '',
       amount: '',
       description: '',
-      date: '',  // reset date field
+      date: '',
+      paymentMethod: '',
     });
   };
 
@@ -51,7 +62,7 @@ const ExpenseTracker = ({ addTransaction, incomeCategories, expenseCategories })
     <div className="tracker-container">
       <h2>Track Your Income and Expenses</h2>
       <p className="sub-text">
-        Keep your financial records organized by logging each transaction. Select the type, choose a category, and enter the details below.
+        Log each transaction, choose a payment method, and stay on top of your finances.
       </p>
 
       <form onSubmit={handleSubmit} className="expense-form">
@@ -95,6 +106,19 @@ const ExpenseTracker = ({ addTransaction, incomeCategories, expenseCategories })
             required
           />
         </label>
+
+       <label>
+  Payment Method
+  <select name="paymentMethod" value={form.paymentMethod} onChange={handleChange} required>
+    <option value="">-- Select Payment Method --</option>
+    {paymentMethods.map((method, idx) => (
+      <option key={idx} value={method.value}>
+        {method.label}
+      </option>
+    ))}
+  </select>
+</label>
+
 
         <label>
           Description <span className="optional">(optional)</span>

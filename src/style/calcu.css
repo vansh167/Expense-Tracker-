@@ -72,7 +72,7 @@
 
 /* Expense badge */
 .mycalc-expense-tile {
-  color: #c62828; /* dark red */
+  color: #ec7e7e; /* dark red */
   font-weight: 600;
 }
 
@@ -132,12 +132,13 @@
   font-size: 14px;
   font-weight: bold;
   border: none;
-  border-radius: 6px;
+  border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.3s ease;
   margin: 5px; /* Added gap between buttons */
   min-width: 50px; /* Optional: consistent button width */
   box-sizing: border-box;
+  
 }
 
 .mycalc-number-button {

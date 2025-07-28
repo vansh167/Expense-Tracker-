@@ -34,6 +34,7 @@ button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  margin-left: 5px;
 }
 .profile-preview {
   width: 100px;

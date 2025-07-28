@@ -5,7 +5,7 @@ import Home from './components/Home';
 import ExpenseTracker from './components/ExpenseTracker';
 import Sidebar from './components/Sidebar';
 import Settings from './components/settings';
-import Calculator from './components/calcu'; // ✅ Calculator component
+import Calculator from './components/calcu';
 import ProfileSettings from './components/ProfileSettings';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
@@ -44,10 +44,12 @@ const App = () => {
 
   const [darkMode, setDarkMode] = useState(false);
 
+  // Update document theme
   useEffect(() => {
     document.body.className = darkMode ? 'dark-mode' : 'light-mode';
   }, [darkMode]);
 
+  // Save to localStorage on changes
   useEffect(() => {
     localStorage.setItem(`${userKey}_transactions`, JSON.stringify(transactions));
   }, [transactions, userKey]);
@@ -68,14 +70,32 @@ const App = () => {
     localStorage.setItem(`${userKey}_userProfile`, JSON.stringify(userProfile));
   }, [userProfile, userKey]);
 
+  // ✅ Updated addTransaction with balance validation
   const addTransaction = (newTxn) => {
-    setTransactions((prev) => [...prev, newTxn]);
+    const income = transactions
+      .filter(t => t.type === 'Income')
+      .reduce((sum, t) => sum + t.amount, 0);
+
+    const expense = transactions
+      .filter(t => t.type === 'Expense')
+      .reduce((sum, t) => sum + t.amount, 0);
+
+    const balance = income - expense;
+
+    // Prevent invalid expense
+    if (newTxn.type === 'Expense' && newTxn.amount > balance) {
+      alert('❌ Not enough balance to add this expense.');
+      return;
+    }
+
+    setTransactions(prev => [...prev, newTxn]);
   };
 
   const deleteTransaction = (index) => {
-    setTransactions((prev) => prev.filter((_, i) => i !== index));
+    setTransactions(prev => prev.filter((_, i) => i !== index));
   };
 
+  // If not logged in
   if (!user) {
     return (
       <Routes>
@@ -97,6 +117,7 @@ const App = () => {
               <Home
                 transactions={transactions}
                 deleteTransaction={deleteTransaction}
+                addTransaction={addTransaction} // ✅ added
                 currency={currency}
               />
             }
@@ -112,7 +133,6 @@ const App = () => {
               />
             }
           />
-          {/* Here we pass transactions to Calculator */}
           <Route
             path="/calculator"
             element={<Calculator transactions={transactions} />}

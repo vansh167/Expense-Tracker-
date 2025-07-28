@@ -29,61 +29,62 @@ const Home = ({ transactions, deleteTransaction, currency }) => {
     const symbol = symbolMap[currency] || '';
     return `${symbol}${amount.toFixed(2)}`;
   };
-const generateMiniStatementPDF = () => {
-  const doc = new jsPDF();
 
-  // Title
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(18);
-  doc.text('Mini Statement', 14, 20);
+  const generateMiniStatementPDF = () => {
+    const doc = new jsPDF();
 
-  // Summary Info
-  doc.setFontSize(12);
-  doc.setTextColor(50, 50, 50); // dark gray text
-  doc.text(`Total Income: ${formatCurrency(income)}`, 14, 30);
-  doc.text(`Total Expense: ${formatCurrency(expense)}`, 14, 36);
-  doc.text(`Balance: ${formatCurrency(balance)}`, 14, 42);
-  doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 48);
+    // Title
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(18);
+    doc.text('Mini Statement', 14, 20);
 
-  // Prepare transaction table data
-  const recentTransactions = transactions.slice(-10).reverse();
+    // Summary Info
+    doc.setFontSize(12);
+    doc.setTextColor(50, 50, 50); // dark gray text
+    doc.text(`Total Income: ${formatCurrency(income)}`, 14, 30);
+    doc.text(`Total Expense: ${formatCurrency(expense)}`, 14, 36);
+    doc.text(`Balance: ${formatCurrency(balance)}`, 14, 42);
+    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 48);
 
-  const tableData = recentTransactions.map((txn, index) => [
-    index + 1,
-    txn.type,
-    txn.category,
-    txn.description,
-    formatCurrency(txn.amount),
-  ]);
+    // Prepare transaction table data (last 10)
+    const recentTransactions = transactions.slice(-10).reverse();
 
-  // Table Styling
-  autoTable(doc, {
-    startY: 55,
-    head: [['#', 'Type', 'Category', 'Description', 'Amount']],
-    body: tableData,
-    theme: 'grid', // adds borders to cells
-    headStyles: {
-      fillColor: [25, 118, 210], // blue
-      textColor: 255,
-      fontSize: 12,
-      fontStyle: 'bold',
-    },
-    bodyStyles: {
-      textColor: [50, 50, 50],
-      fontSize: 11,
-    },
-    alternateRowStyles: {
-      fillColor: [240, 240, 240], // light gray alternate rows
-    },
-    styles: {
-      cellPadding: 3,
-      halign: 'left',
-    },
-  });
+    const tableData = recentTransactions.map((txn, index) => [
+      index + 1,
+      txn.type,
+      txn.category,
+      txn.paymentMethod || 'N/A',    // <-- payment method added here
+      txn.description,
+      formatCurrency(txn.amount),
+    ]);
 
-  doc.save('MiniStatement.pdf');
-};
+    // Table Styling
+    autoTable(doc, {
+      startY: 55,
+      head: [['#', 'Type', 'Category', 'Payment Method', 'Description', 'Amount']], // <-- header updated
+      body: tableData,
+      theme: 'grid', // adds borders to cells
+      headStyles: {
+        fillColor: [25, 118, 210], // blue
+        textColor: 255,
+        fontSize: 12,
+        fontStyle: 'bold',
+      },
+      bodyStyles: {
+        textColor: [50, 50, 50],
+        fontSize: 11,
+      },
+      alternateRowStyles: {
+        fillColor: [240, 240, 240], // light gray alternate rows
+      },
+      styles: {
+        cellPadding: 3,
+        halign: 'left',
+      },
+    });
 
+    doc.save('MiniStatement.pdf');
+  };
 
   return (
     <div className="home-container">
@@ -172,6 +173,9 @@ const generateMiniStatementPDF = () => {
               <div className="txn-row">
                 <span className="txn-type">{txn.type}</span>
                 <span className="txn-category">{txn.category}</span>
+                <span className="txn-payment-method" style={{ margin: '0 10px', fontStyle: 'italic', color: '#555' }}>
+                  💳 {txn.paymentMethod || 'N/A'}
+                </span>
                 <span className="txn-amount">
                   {txn.type === 'Expense' ? '-' : '+'}
                   {formatCurrency(txn.amount)}
