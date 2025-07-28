@@ -4,7 +4,7 @@ import { UserContext, UserProvider } from './components/UserContext';
 import Home from './components/Home';
 import ExpenseTracker from './components/ExpenseTracker';
 import Sidebar from './components/Sidebar';
-import Settings from './components/settings';
+import Settings from './components/Settings';
 import Calculator from './components/calcu'; // ✅ Calculator component
 import ProfileSettings from './components/ProfileSettings';
 import SignIn from './components/SignIn';

@@ -4,6 +4,7 @@ import PieActiveArc from './PieActiveAc';
 import IncomeExpenseBarChart from './Chat';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable'; // ✅ Corrected
+import Settings from '../components/settings';
 
 const Home = ({ transactions, deleteTransaction, currency }) => {
   const [selectedIndex, setSelectedIndex] = React.useState(null);
