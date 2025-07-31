@@ -380,11 +380,11 @@
 }
 
 .transaction-income-bg {
-  --transaction-bg-left: #438847; /* smaller dark green */
+  --transaction-bg-left: #b7edb9cb; /* smaller dark green */
 }
 
 .transaction-expense-bg {
-  --transaction-bg-left: #d14f4f9f; /* smaller dark red */
+  --transaction-bg-left: #f5bdbd9f; /* smaller dark red */
 }
 
 .transaction-amount {

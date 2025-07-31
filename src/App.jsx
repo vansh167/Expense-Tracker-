@@ -10,6 +10,7 @@ import ProfileSettings from './components/ProfileSettings';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import './style/App.css';
+// import TransferForm from '../components/TansferFom';
 
 const initialIncomeCategories = ['Salary', 'Freelance', 'Investments'];
 const initialExpenseCategories = ['Food', 'Transport', 'Shopping', 'Bills'];
@@ -105,6 +106,15 @@ const App = () => {
       </Routes>
     );
   }
+const income = transactions
+  .filter(t => t.type === 'Income')
+  .reduce((sum, t) => sum + t.amount, 0);
+
+const expense = transactions
+  .filter(t => t.type === 'Expense')
+  .reduce((sum, t) => sum + t.amount, 0);
+
+const balance = income - expense;
 
   return (
     <div className="app-container">
@@ -148,6 +158,21 @@ const App = () => {
               />
             }
           />
+   <Route
+  path="/profile"
+  element={
+    <ProfileSettings
+      currency={currency}
+      setCurrency={setCurrency}
+      userProfile={userProfile}
+      setUserProfile={setUserProfile}
+      addTransaction={addTransaction}
+      transactions={transactions}
+      balance={balance}  // <-- Add this line
+    />
+  }
+/>
+
           <Route
             path="/profile"
             element={

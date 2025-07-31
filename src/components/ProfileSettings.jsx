@@ -1,97 +1,133 @@
-import React, { useState, useEffect } from 'react';
-import '../style/ProfileSettings.css';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React, { useState } from "react";
+import "../style/ProfileSettings.css";
 
-const ProfileSettings = ({ currency, setCurrency, userProfile, setUserProfile }) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [dob, setDob] = useState('');
-  const [bio, setBio] = useState('');
-  const [image, setImage] = useState(null);
-  const [preview, setPreview] = useState(null);
+const TransferForm = ({ balance, addTransaction, transactions = [] }) => {
+  const [name, setName] = useState("");
+  const [accountNumber, setAccountNumber] = useState("");
+  const [ifscCode, setIfscCode] = useState("");
+  const [amount, setAmount] = useState("");
+  const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    setName(userProfile.name || '');
-    setEmail(userProfile.email || '');
-    setPhone(userProfile.phone || '');
-    setDob(userProfile.dob || '');
-    setBio(userProfile.bio || '');
-    setImage(userProfile.image || null);
-    setPreview(userProfile.image || null);
-  }, [userProfile]);
+  const validateIFSC = (code) => /^[A-Z]{4}0[A-Z0-9]{6}$/i.test(code);
 
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result);
-        setPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (name.trim() === "") return setMessage("⚠️ Please enter the name.");
+    if (accountNumber.trim() === "") return setMessage("⚠️ Please enter the account number.");
+    if (!validateIFSC(ifscCode.trim())) return setMessage("⚠️ Invalid IFSC code format.");
+    if (!amount || isNaN(amount) || Number(amount) <= 0)
+      return setMessage("⚠️ Enter a valid amount > 0.");
+
+    if (Number(amount) > balance) {
+      return setMessage(`❌ Insufficient balance. Max available: ₹${balance.toFixed(2)}`);
     }
-  };
 
-  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const newTxn = {
+      id: Date.now(),
+      type: "Expense",
+      amount: Number(amount),
+      description: `Transfer to ${name}`,
+      date: new Date().toISOString(),
+      meta: {
+        name: name.trim(),
+        accountNumber: accountNumber.trim(),
+        ifscCode: ifscCode.toUpperCase().trim(),
+      },
+    };
 
-  const handleSave = () => {
-    if (!name.trim()) return toast.error('Name is required');
-    if (!validateEmail(email)) return toast.error('Enter a valid email');
+    addTransaction(newTxn);
+    setMessage("✅ Transfer successful!");
 
-    const updatedProfile = { name, email, phone, dob, bio, image };
-    setUserProfile(updatedProfile);
-
-    localStorage.setItem('userProfile', JSON.stringify(updatedProfile));
-    localStorage.setItem('currency', currency);
-
-    toast.success('Profile updated successfully!');
+    // Clear inputs
+    setName("");
+    setAccountNumber("");
+    setIfscCode("");
+    setAmount("");
   };
 
   return (
-    <div className="profile-settings">
-      <h2>Profile Settings</h2>
+    <div className="transfer-container">
+      {/* Left side: Form */}
+      <div className="form-section">
+        <h2>Transfer Form</h2>
+        <form className="form" onSubmit={handleSubmit}>
+          <label>
+            Name:
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </label>
 
-      <div className="section">
-        <label>Profile Picture:</label>
-        <input type="file" accept="image/*" onChange={handleImageUpload} />
-        {preview && <img src={preview} alt="Profile" className="profile-preview" />}
+          <label>
+            Account Number:
+            <input
+              type="text"
+              value={accountNumber}
+              onChange={(e) => setAccountNumber(e.target.value)}
+              required
+            />
+          </label>
+
+          <label>
+            IFSC Code:
+            <input
+              type="text"
+              value={ifscCode}
+              maxLength={11}
+              onChange={(e) => setIfscCode(e.target.value.toUpperCase())}
+              required
+            />
+          </label>
+
+          <label>
+            Amount (₹):
+            <input
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              min="1"
+              required
+            />
+          </label>
+
+          <button type="submit" className="submit-button">Send</button>
+        </form>
+
+        {message && <p className="message">{message}</p>}
       </div>
 
-      <div className="section">
-        <label>Name:</label>
-        <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" />
-
-        <label>Email:</label>
-        <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Your email" />
-
-        <label>Phone Number:</label>
-        <input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+1 234 567 890" />
-
-        <label>Date of Birth:</label>
-        <input type="date" value={dob} onChange={(e) => setDob(e.target.value)} />
-
-        <label>Bio:</label>
-        <textarea value={bio} onChange={(e) => setBio(e.target.value)} placeholder="Write something about yourself..." />
+      {/* Right side: Mini transactions */}
+      <div className="mini-statement">
+        <h3>Recent Transactions</h3>
+        {transactions.length === 0 ? (
+          <p className="empty-txn">No transactions yet.</p>
+        ) : (
+          <ul className="txn-list">
+            {transactions
+              .slice(-5)
+              .reverse()
+              .map((txn) => (
+                <li key={txn.id} className="txn-item">
+                  <div className="txn-left">
+                    <strong>{txn.description}</strong>
+                    <span className="txn-date">
+                      {new Date(txn.date).toLocaleDateString()}
+                    </span>
+                  </div>
+                  <div className="txn-amount">
+                    ₹{txn.amount.toFixed(2)}
+                  </div>
+                </li>
+              ))}
+          </ul>
+        )}
       </div>
-
-      <div className="section">
-        <label>Preferred Currency:</label>
-        <select value={currency} onChange={(e) => setCurrency(e.target.value)}>
-          <option value="INR">INR ₹</option>
-          <option value="USD">USD $</option>
-          <option value="EUR">EUR €</option>
-          <option value="GBP">GBP £</option>
-        </select>
-        <p className="currency-preview">Preview: {currency} {currency === 'INR' ? '₹10,000' : currency === 'USD' ? '$10,000' : currency === 'EUR' ? '€10,000' : '£10,000'}</p>
-      </div>
-
-      <button className="save-btn" onClick={handleSave}>Save Profile</button>
-
-      <ToastContainer position="top-center" />
     </div>
   );
 };
 
-export default ProfileSettings;
+export default TransferForm;
