@@ -40,8 +40,8 @@ const PieActiveArc = ({ transactions }) => {
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
         >
-          {categories.map((category) => (
-            <option key={category} value={category}>
+          {categories.map((category, idx) => (
+            <option key={category + idx} value={category}>
               {category}
             </option>
           ))}

@@ -9,14 +9,20 @@ import Settings from './settings';
 const Home = ({ transactions, deleteTransaction, currency }) => {
   const [selectedIndex, setSelectedIndex] = React.useState(null);
 
-  const income = transactions
+  // Filter out transfer transactions from charts and income
+  const filteredTransactions = transactions.filter(txn => !txn.isTransfer);
+
+  // Income excludes transfers
+  const income = filteredTransactions
     .filter(t => t.type === 'Income')
     .reduce((sum, t) => sum + t.amount, 0);
 
+  // Expense includes all expenses including transfers
   const expense = transactions
     .filter(t => t.type === 'Expense')
     .reduce((sum, t) => sum + t.amount, 0);
 
+  // Balance calculation includes all transactions
   const balance = income - expense;
 
   const formatCurrency = (amount) => {
@@ -33,39 +39,35 @@ const Home = ({ transactions, deleteTransaction, currency }) => {
   const generateMiniStatementPDF = () => {
     const doc = new jsPDF();
 
-    // Title
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(18);
     doc.text('Mini Statement', 14, 20);
 
-    // Summary Info
     doc.setFontSize(12);
-    doc.setTextColor(50, 50, 50); // dark gray text
+    doc.setTextColor(50, 50, 50);
     doc.text(`Total Income: ${formatCurrency(income)}`, 14, 30);
     doc.text(`Total Expense: ${formatCurrency(expense)}`, 14, 36);
     doc.text(`Balance: ${formatCurrency(balance)}`, 14, 42);
     doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 48);
 
-    // Prepare transaction table data (last 10)
     const recentTransactions = transactions.slice(-10).reverse();
 
     const tableData = recentTransactions.map((txn, index) => [
       index + 1,
       txn.type,
       txn.category,
-      txn.paymentMethod || 'N/A',    // <-- payment method added here
+      txn.paymentMethod || 'N/A',
       txn.description,
       formatCurrency(txn.amount),
     ]);
 
-    // Table Styling
     autoTable(doc, {
       startY: 55,
-      head: [['#', 'Type', 'Category', 'Payment Method', 'Description', 'Amount']], // <-- header updated
+      head: [['#', 'Type', 'Category', 'Payment Method', 'Description', 'Amount']],
       body: tableData,
-      theme: 'grid', // adds borders to cells
+      theme: 'grid',
       headStyles: {
-        fillColor: [25, 118, 210], // blue
+        fillColor: [25, 118, 210],
         textColor: 255,
         fontSize: 12,
         fontStyle: 'bold',
@@ -75,7 +77,7 @@ const Home = ({ transactions, deleteTransaction, currency }) => {
         fontSize: 11,
       },
       alternateRowStyles: {
-        fillColor: [240, 240, 240], // light gray alternate rows
+        fillColor: [240, 240, 240],
       },
       styles: {
         cellPadding: 3,
@@ -89,8 +91,9 @@ const Home = ({ transactions, deleteTransaction, currency }) => {
   return (
     <div className="home-container">
       <div className="pie-wrapper">
-        <PieActiveArc transactions={transactions} />
-        <IncomeExpenseBarChart transactions={transactions} />
+        {/* Pass filtered transactions without transfers to charts */}
+        <PieActiveArc transactions={filteredTransactions} />
+        <IncomeExpenseBarChart transactions={filteredTransactions} />
       </div>
 
       <h2>Dashboard</h2>
@@ -128,7 +131,7 @@ const Home = ({ transactions, deleteTransaction, currency }) => {
         </button>
       </div>
 
-      {/* Header and Delete Button */}
+      {/* Transaction History and Delete Button */}
       <div
         style={{
           display: 'flex',
@@ -173,7 +176,10 @@ const Home = ({ transactions, deleteTransaction, currency }) => {
               <div className="txn-row">
                 <span className="txn-type">{txn.type}</span>
                 <span className="txn-category">{txn.category}</span>
-                <span className="txn-payment-method" style={{ margin: '0 10px', fontStyle: 'italic', color: '#555' }}>
+                <span
+                  className="txn-payment-method"
+                  style={{ margin: '0 10px', fontStyle: 'italic', color: '#555' }}
+                >
                   💳 {txn.paymentMethod || 'N/A'}
                 </span>
                 <span className="txn-amount">

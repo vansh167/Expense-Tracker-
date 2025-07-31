@@ -10,7 +10,7 @@ import ProfileSettings from './components/ProfileSettings';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import './style/App.css';
-// import TransferForm from '../components/TansferFom';
+import '../src/components/ProfileSettings';
 
 const initialIncomeCategories = ['Salary', 'Freelance', 'Investments'];
 const initialExpenseCategories = ['Food', 'Transport', 'Shopping', 'Bills'];

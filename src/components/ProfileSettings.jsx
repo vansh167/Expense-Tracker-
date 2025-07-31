@@ -29,6 +29,7 @@ const TransferForm = ({ balance, addTransaction, transactions = [] }) => {
       amount: Number(amount),
       description: `Transfer to ${name}`,
       date: new Date().toISOString(),
+      isTransfer: true, // ✅ Tag for filtering
       meta: {
         name: name.trim(),
         accountNumber: accountNumber.trim(),
@@ -48,18 +49,12 @@ const TransferForm = ({ balance, addTransaction, transactions = [] }) => {
 
   return (
     <div className="transfer-container">
-      {/* Left side: Form */}
       <div className="form-section">
         <h2>Transfer Form</h2>
         <form className="form" onSubmit={handleSubmit}>
           <label>
             Name:
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
+            <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
           </label>
 
           <label>
@@ -100,7 +95,6 @@ const TransferForm = ({ balance, addTransaction, transactions = [] }) => {
         {message && <p className="message">{message}</p>}
       </div>
 
-      {/* Right side: Mini transactions */}
       <div className="mini-statement">
         <h3>Recent Transactions</h3>
         {transactions.length === 0 ? (
@@ -118,9 +112,7 @@ const TransferForm = ({ balance, addTransaction, transactions = [] }) => {
                       {new Date(txn.date).toLocaleDateString()}
                     </span>
                   </div>
-                  <div className="txn-amount">
-                    ₹{txn.amount.toFixed(2)}
-                  </div>
+                  <div className="txn-amount">₹{txn.amount.toFixed(2)}</div>
                 </li>
               ))}
           </ul>
