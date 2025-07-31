@@ -151,8 +151,12 @@ const Home = ({ transactions, deleteTransaction, currency }) => {
           }}
           disabled={selectedIndex === null}
           style={{
-            padding: '6px 12px',
-            cursor: selectedIndex !== null ? 'pointer' : 'not-allowed',
+            padding: '8px 16px',
+            backgroundColor: '#1976d2',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
           }}
         >
           Delete Selected

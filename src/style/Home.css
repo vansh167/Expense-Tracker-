@@ -134,3 +134,81 @@ body{
 .expense-box {
   background-color: #f44336; /* Red */
 }
+.transaction-history {
+  list-style: none;
+  padding: 0;
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Transaction Card */
+.transaction-history .txn {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  padding: 16px 20px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.transaction-history .txn:hover {
+  border-color: #90caf9;
+  background-color: #f9fcff;
+}
+
+.transaction-history .txn.selected {
+  background-color: #e3f2fd;
+  border-color: #42a5f5;
+}
+
+/* Layout inside transaction card */
+.txn-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.txn-type {
+  font-weight: 600;
+  color: #2b2b2b;
+  font-size: 1rem;
+  margin-right: 12px;
+}
+
+.txn-category {
+  font-size: 0.95rem;
+  color: #666;
+  margin-right: auto;
+}
+
+.txn-payment-method {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: #999;
+  margin-left: 10px;
+}
+
+.txn-amount {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-left: auto;
+}
+
+.txn.expense .txn-amount {
+  color: #e53935;
+}
+
+.txn.income .txn-amount {
+  color: #2e7d32;
+}
+
+.txn-description {
+  margin-top: 8px;
+  font-size: 0.88rem;
+  color: #555;
+  padding-left: 2px;
+}

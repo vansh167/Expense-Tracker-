@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import '../style/Expense.css';
 
 const ExpenseTracker = ({ addTransaction, incomeCategories, expenseCategories }) => {
@@ -7,20 +9,19 @@ const ExpenseTracker = ({ addTransaction, incomeCategories, expenseCategories })
     Expense: expenseCategories,
   };
 
-const paymentMethods = [
-  { label: '💵 Cash', value: 'Cash' },
-  { label: '💳 Card', value: 'Card' },
-  { label: '🔁 UPI', value: 'UPI' },
-  { label: '🏦 Bank Transfer', value: 'Bank Transfer' },
-];
-
+  const paymentMethods = [
+    { label: '💵 Cash', value: 'Cash' },
+    { label: '💳 Card', value: 'Card' },
+    { label: '🔁 UPI', value: 'UPI' },
+    { label: '🏦 Bank Transfer', value: 'Bank Transfer' },
+  ];
 
   const [form, setForm] = useState({
     type: 'Expense',
     category: '',
     amount: '',
     description: '',
-    date: '',
+    date: null, // Changed from empty string to null for DatePicker
     paymentMethod: '',
   });
 
@@ -34,15 +35,21 @@ const paymentMethods = [
     }
   };
 
+  // New handler for react-datepicker date change
+  const handleDateChange = (date) => {
+    setForm({ ...form, date });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Required fields
+    // Required fields check
     if (!form.category || !form.amount || !form.date || !form.paymentMethod) return;
 
     const newTransaction = {
       ...form,
       amount: parseFloat(form.amount),
+      date: form.date.toISOString(), // convert Date object to ISO string
     };
 
     addTransaction(newTransaction);
@@ -53,7 +60,7 @@ const paymentMethods = [
       category: '',
       amount: '',
       description: '',
-      date: '',
+      date: null,
       paymentMethod: '',
     });
   };
@@ -97,28 +104,29 @@ const paymentMethods = [
         </label>
 
         <label>
-          Date
-          <input
-            type="date"
-            name="date"
-            value={form.date}
-            onChange={handleChange}
+          Date:<br />
+          <DatePicker
+            selected={form.date}
+            onChange={handleDateChange}
+            dateFormat="MM-dd-yyyy"
+            timeFormat='HH:mm'
+            placeholderText="Select a date"
+            maxDate={new Date()}
             required
           />
         </label>
 
-       <label>
-  Payment Method
-  <select name="paymentMethod" value={form.paymentMethod} onChange={handleChange} required>
-    <option value="">-- Select Payment Method --</option>
-    {paymentMethods.map((method, idx) => (
-      <option key={idx} value={method.value}>
-        {method.label}
-      </option>
-    ))}
-  </select>
-</label>
-
+        <label>
+          Payment Method
+          <select name="paymentMethod" value={form.paymentMethod} onChange={handleChange} required>
+            <option value="">-- Select Payment Method --</option>
+            {paymentMethods.map((method, idx) => (
+              <option key={idx} value={method.value}>
+                {method.label}
+              </option>
+            ))}
+          </select>
+        </label>
 
         <label>
           Description <span className="optional">(optional)</span>

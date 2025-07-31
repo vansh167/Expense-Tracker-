@@ -55,8 +55,9 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
           </Link>
         </li>
         <li>
-          <button onClick={handleLogout} className="sidebar-link logout-button">
-            <FiLogOut className="sidebar-icon" /> Logout
+      
+          <button onClick={handleLogout} className="sidebar-l ink logout-button" style={{ width: '#', backgroundColor:" #1565c0", color: 'white', border: 'none', borderRadius: '12px', padding: '10px 15px' }}>
+            <FiLogOut className="sidebar-icon"/> Logout
           </button>
         </li>
       </ul>
