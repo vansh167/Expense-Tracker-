@@ -8,8 +8,9 @@ import {
   FiSun,
   FiUser,
   FiLogOut,
+  FiCreditCard,  // <-- added this
 } from 'react-icons/fi';
-import { AiOutlineCalendar } from 'react-icons/ai'; // single icon for combined feature
+import { AiOutlineCalendar } from 'react-icons/ai';
 import { UserContext } from './UserContext'; 
 import '../style/Side.css';
 
@@ -35,13 +36,24 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
         </li>
         <li>
           <Link to="/expense-tracker" className="sidebar-link">
-            <FiBarChart2 className="sidebar-icon" />  Add Entry
+            <FiBarChart2 className="sidebar-icon" /> Add Entry
           </Link>
         </li>
+       
         <li>
+          <Link to="/profile" className="sidebar-link">
+            <FiUser className="sidebar-icon" /> Payment
+          </Link>
+        </li>
+        {/* New Loan Management link */}
+        <li>
+          <Link to="/loan" className="sidebar-link">
+            <FiCreditCard className="sidebar-icon" /> Loan Management
+          </Link>
+        </li>
+         <li>
           <Link to="/calculator" className="sidebar-link">
-            <AiOutlineCalendar className="sidebar-icon" />
-            Finance Planner
+            <AiOutlineCalendar className="sidebar-icon" /> Finance Planner
           </Link>
         </li>
         <li>
@@ -49,15 +61,22 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
             <FiSettings className="sidebar-icon" /> Settings
           </Link>
         </li>
+        
         <li>
-          <Link to="/profile" className="sidebar-link">
-            <FiUser className="sidebar-icon" /> Payment
-          </Link>
-        </li>
-        <li>
-      
-          <button onClick={handleLogout} className="sidebar-l ink logout-button" style={{ width: '#', backgroundColor:" #1565c0", color: 'white', border: 'none', borderRadius: '12px', padding: '10px 15px' }}>
-            <FiLogOut className="sidebar-icon"/> Logout
+          <button
+            onClick={handleLogout}
+            className="sidebar-link logout-button"
+            style={{
+              backgroundColor: "#1565c0",
+              color: "white",
+              border: "none",
+              borderRadius: "12px",
+              padding: "10px 15px",
+              // width: "100%",
+              cursor: "pointer",
+            }}
+          >
+            <FiLogOut className="sidebar-icon" /> Logout
           </button>
         </li>
       </ul>

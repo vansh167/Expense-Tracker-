@@ -11,6 +11,7 @@ import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import './style/App.css';
 import '../src/components/ProfileSettings';
+import LoanManagement from './components/Loan';
 
 const initialIncomeCategories = ['Salary', 'Freelance', 'Investments'];
 const initialExpenseCategories = ['Food', 'Transport', 'Shopping', 'Bills'];
@@ -143,6 +144,12 @@ const balance = income - expense;
               />
             }
           />
+          <Route 
+          path="/loan"
+          element={<LoanManagement/>}
+          />
+
+        
           <Route
             path="/calculator"
             element={<Calculator transactions={transactions} />}

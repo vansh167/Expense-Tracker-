@@ -1,6 +1,25 @@
+/* Wrapper positioning */
+.mycalc-wrapper {
+  display: flex;
+  gap: 17%;
+  margin-left: 25%;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+/* Responsive fallback */
+@media (max-width: 768px) {
+  .mycalc-wrapper {
+    flex-direction: column;
+    margin-left: 10%;
+  }
+}
+
+/* Base calendar styles for both modes */
 .mycalc-calendar-wrapper {
   margin-left: 25%;
 }
+
 .mycalc-calendar {
   border-radius: 6px;
   border: 1px solid #ccc;
@@ -9,7 +28,7 @@
   font-family: inherit;
 }
 
-/* Calendar tiles (days) */
+/* Calendar tiles */
 .mycalc-calendar .react-calendar__tile {
   padding: 8px 6px;
   font-weight: 500;
@@ -19,30 +38,25 @@
   transition: background-color 0.2s ease;
 }
 
-/* Hover effect */
 .mycalc-calendar .react-calendar__tile:hover {
   background-color: var(--calendar-hover-bg, #f0f0f0);
   color: var(--calendar-hover-text, #000);
 }
 
-/* Selected day */
 .mycalc-calendar .react-calendar__tile--active {
   background-color: var(--calendar-selected-bg, #1976d2);
   color: var(--calendar-selected-text, #fff);
   font-weight: 700;
 }
 
-/* Today’s date highlight */
 .mycalc-calendar .react-calendar__tile--now {
   border: 1.5px solid var(--calendar-today-border, #1976d2);
 }
 
-/* Disabled tiles */
 .mycalc-calendar .react-calendar__tile--disabled {
   color: var(--calendar-disabled-text, #aaa);
 }
 
-/* Navigation buttons (prev, next month) */
 .mycalc-calendar button.react-calendar__navigation__arrow,
 .mycalc-calendar button.react-calendar__navigation__label {
   color: var(--calendar-nav-text, #1976d2);
@@ -57,119 +71,23 @@
   color: var(--calendar-nav-hover, #004ba0);
 }
 
-/* Tile content (your income/expense badges) */
 .mycalc-tile-info {
   margin-top: 3px;
   font-size: 0.7rem;
   color: var(--calendar-badge-text, #444);
 }
 
-/* Income badge */
 .mycalc-income-tile {
   color: #2e7d32; /* dark green */
   font-weight: 600;
 }
 
-/* Expense badge */
 .mycalc-expense-tile {
   color: #ec7e7e; /* dark red */
   font-weight: 600;
 }
 
-/* === Dark mode overrides === */
-@media (prefers-color-scheme: dark) {
-  .mycalc-calendar {
-    background-color: #1e1e1e;
-    color: #ddd;
-    border-color: #444;
-  }
-
-  .mycalc-calendar .react-calendar__tile {
-    color: #ddd;
-  }
-
-  .mycalc-calendar .react-calendar__tile:hover {
-    background-color: #333;
-    color: #fff;
-  }
-
-  .mycalc-calendar .react-calendar__tile--active {
-    background-color: #232950;
-    color: #fff;
-  }
-
-  .mycalc-calendar .react-calendar__tile--now {
-    border-color: #212055;
-  }
-
-  .mycalc-calendar .react-calendar__tile--disabled {
-    color: #555;
-  }
-
-  .mycalc-calendar button.react-calendar__navigation__arrow,
-  .mycalc-calendar button.react-calendar__navigation__label {
-    color: #90caf9;
-    
-  }
-.mycalc-calculator-buttons {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px; /* gap between buttons */
-  padding: 5px; /* optional padding */
-}
-
-  .mycalc-calendar button.react-calendar__navigation__arrow:hover,
-  .mycalc-calendar button.react-calendar__navigation__label:hover {
-    color: #64b5f6;
-    
-  }
-
-  .mycalc-tile-info {
-    color: #bbb;
-  }
-  .mycalc-btn {
-  padding: 15px;
-  font-size: 14px;
-  font-weight: bold;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin: 5px; /* Added gap between buttons */
-  min-width: 50px; /* Optional: consistent button width */
-  box-sizing: border-box;
-  
-}
-
-.mycalc-number-button {
-  background-color: #e0e0e0;
-  color: #222;
-}
-
-.mycalc-operator-button {
-  background-color: #488cd0d0;
-  color: white;
-}
-
-.mycalc-equal-button {
-  background-color: #2e7d32;
-  color: white;
-}
-
-.mycalc-clear-button {
-  background-color: #c62828;
-  color: white;
-  grid-column: span 4;
-}
-
-/* Button hover effects */
-.mycalc-btn:hover {
-  opacity: 0.9;
-}
-
-}
-/* === Calculator Styling === */
-
+/* Calculator section */
 .mycalc-calculator-section {
   margin-top: 104px;
   padding: 20px;
@@ -231,17 +149,149 @@
   grid-column: span 4;
 }
 
-/* Button hover effects */
+/* Button hover */
 .mycalc-calculator-buttons button:hover {
   opacity: 0.9;
 }
 
-/* === Dark mode for calculator === */
-@media (prefers-color-scheme: dark) {
-  .mycalc-calculator-section {
-    background-color: #1f1f1f;
-    color: #f0f0f0;
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05);
+/* Transaction income/expense colors */
+.mycalc-transaction-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #222;
+  background: linear-gradient(
+    to right,
+    var(--transaction-bg-left) 8px,
+    rgba(255, 255, 255, 0.6) 40%,
+    #fff 100%
+  );
+  transition: background-color 0.3s ease;
+}
+
+.transaction-income-bg {
+  --transaction-bg-left: #b7edb9cb;
+}
+
+.transaction-expense-bg {
+  --transaction-bg-left: #f5bdbd9f;
+}
+
+.transaction-amount {
+  min-width: 60px;
+  text-align: right;
+  font-weight: 700;
+  color: #222;
+}
+
+.mycalc-tip {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 8px;
+  font-style: italic;
+}
+
+/* Calendar date numbers */
+.react-calendar__tile {
+  font-weight: 600;
+  color: #264653;
+}
+
+/* Weekday headers */
+.react-calendar__month-view__weekdays__weekday {
+  color: #1d3557;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+/* Highlight income-heavy dates */
+.calendar-tile-income {
+  background-color: #d0f0ea;
+  border-radius: 6px;
+}
+
+/* Highlight expense-heavy dates */
+.calendar-tile-expense {
+  background-color: #f9d6d5;
+  border-radius: 6px;
+}
+
+/* Neutral dates */
+.calendar-tile-neutral {
+  background-color: #f0f0f0;
+  border-radius: 6px;
+}
+
+/* Income text in calendar tile */
+.mycalc-income-tile {
+  color: #2a9d8f; /* Teal/green */
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+/* Expense text in calendar tile */
+.mycalc-expense-tile {
+  color: #e63946; /* Red */
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+/* ------------------
+   LIGHT MODE OVERRIDES
+-------------------- */
+.light-mode {
+  --calendar-bg: #fff;
+  --calendar-text: #222;
+  --calendar-hover-bg: #f0f0f0;
+  --calendar-hover-text: #000;
+  --calendar-selected-bg: #1976d2;
+  --calendar-selected-text: #fff;
+  --calendar-today-border: #1976d2;
+  --calendar-disabled-text: #aaa;
+  --calendar-nav-text: #1976d2;
+  --calendar-nav-hover: #004ba0;
+  --calendar-badge-text: #444;
+
+  --calc-bg: #f9f9f9;
+  --calc-text: #222;
+
+  .mycalc-transaction-item {
+    color: #222;
+    background: linear-gradient(
+      to right,
+      var(--transaction-bg-left) 8px,
+      rgba(255, 255, 255, 0.6) 40%,
+      #fff 100%
+    );
+  }
+}
+
+/* ------------------
+   DARK MODE OVERRIDES
+-------------------- */
+.dark-mode {
+  --calendar-bg: #1e1e1e;
+  --calendar-text: #ddd;
+  --calendar-hover-bg: #333;
+  --calendar-hover-text: #fff;
+  --calendar-selected-bg: #232950;
+  --calendar-selected-text: #fff;
+  --calendar-today-border: #212055;
+  --calendar-disabled-text: #555;
+  --calendar-nav-text: #90caf9;
+  --calendar-nav-hover: #64b5f6;
+  --calendar-badge-text: #bbb;
+
+  --calc-bg: #1f1f1f;
+  --calc-text: #f0f0f0;
+
+  .mycalc-calendar {
+    border-color: #444;
   }
 
   .mycalc-calculator-display {
@@ -265,131 +315,15 @@
   .mycalc-clear-button {
     background-color: #e53935;
   }
-}
-.mycalc-wrapper {
-  margin-left: 25%;
-}
-/* Align calendar and calculator side-by-side */
-.mycalc-wrapper {
-  display: flex;
-  gap: 17%;
-  margin-left: 25%;
-  flex-wrap: wrap;
-  align-items: flex-start;
-}
 
-/* Responsive fallback */
-@media (max-width: 768px) {
-  .mycalc-wrapper {
-    flex-direction: column;
-    margin-left: 10%;
-  }
-}
-
-/* Transaction income/expense colors */
-.mycalc-transaction-item {
-  display: flex;
-  justify-content: space-between;
-  height: 9px;
-  border-bottom: 1px solid #ddd;
-  font-size: 0.95rem;
-}
-
-.mycalc-amount.income {
-  color: #0d220e;
-  font-weight:600;
-}
-
-.mycalc-amount.expense {
-  color: #c62828;
-  font-weight: 600;
-}
-
-@media (prefers-color-scheme: dark) {
   .mycalc-transaction-item {
     border-color: #444;
+    color: #ddd;
+    background: linear-gradient(
+      to right,
+      var(--transaction-bg-left) 8px,
+      rgba(50, 50, 50, 0.6) 40%,
+      #222 100%
+    );
   }
-}
-.mycalc-tip {
-  font-size: 0.9rem;
-  color: #555;
-  margin-bottom: 8px;
-  font-style: italic;
-}
-/* Calendar date numbers */
-.react-calendar__tile {
-  font-weight: 600;
-  color: #264653;
-}
-
-/* Weekday headers */
-.react-calendar__month-view__weekdays__weekday {
-  color: #1d3557;
-  font-weight: 700;
-  text-transform: uppercase;
-  font-size: 0.85rem;
-}
-
-/* Highlight income-heavy dates with green background */
-.calendar-tile-income {
-  background-color: #d0f0ea;
-  border-radius: 6px;
-}
-
-/* Highlight expense-heavy dates with light red background */
-.calendar-tile-expense {
-  background-color: #f9d6d5;
-  border-radius: 6px;
-}
-
-/* Neutral dates (income == expense or no tx) */
-.calendar-tile-neutral {
-  background-color: #f0f0f0;
-  border-radius: 6px;
-}
-
-/* Income text in calendar tile */
-.mycalc-income-tile {
-  color: #2a9d8f; /* Teal/green */
-  font-weight: 700;
-  font-size: 0.8rem;
-}
-
-/* Expense text in calendar tile */
-.mycalc-expense-tile {
-  color: #e63946; /* Red */
-  font-weight: 700;
-  font-size: 0.8rem;
-}
-.mycalc-transaction-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 12px;
-  border-radius: 8px;
-  margin-bottom: 8px;
-  font-weight: 600;
-  color: #222;
-  background: linear-gradient(
-    to right,
-    var(--transaction-bg-left) 8px,
-    rgba(255, 255, 255, 0.6) 40%,
-    #fff 100%
-  );
-  transition: background-color 0.3s ease;
-}
-
-.transaction-income-bg {
-  --transaction-bg-left: #b7edb9cb; /* smaller dark green */
-}
-
-.transaction-expense-bg {
-  --transaction-bg-left: #f5bdbd9f; /* smaller dark red */
-}
-
-.transaction-amount {
-  min-width: 60px;
-  text-align: right;
-  font-weight: 700;
-  color: #222;
 }

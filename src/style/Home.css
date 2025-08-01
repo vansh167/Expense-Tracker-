@@ -212,3 +212,157 @@ body{
   color: #555;
   padding-left: 2px;
 }
+/* Light mode (default styles) */
+/* Your existing styles apply here */
+
+/* Dark mode overrides */
+body.dark-mode {
+  background-color: #1c1c2c;
+  color: #f0f0f0;
+}
+
+body.dark-mode .home-container {
+  color: #f0f0f0;
+}
+
+body.dark-mode .transaction-history {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+body.dark-mode .txn {
+  background-color: #2a2a40;
+  border-left: 6px solid transparent;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  padding: 15px 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  border: 1px solid transparent;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+  cursor: pointer;
+  color: #ddd;
+}
+
+body.dark-mode .txn:hover {
+  border-color: #3a7bd5;
+  background-color: #3a3a50;
+}
+
+body.dark-mode .txn.selected {
+  background-color: #346bb3;
+  border-color: #346bb3;
+  color: #f0f0f0;
+}
+
+body.dark-mode .txn.income {
+  border-left-color: #5ca161; /* subtle green */
+  background-color: #254225;
+  color: #c8f7c5;
+}
+
+body.dark-mode .txn.expense {
+  border-left-color: #d9534f; /* consistent red */
+  background-color: #502424;
+  color: #f7c5c5;
+}
+
+body.dark-mode .txn-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+body.dark-mode .txn-type {
+  font-weight: 600;
+  color: #b0b0d0;
+  font-size: 1rem;
+  margin-right: 12px;
+}
+
+body.dark-mode .txn-category {
+  font-size: 0.95rem;
+  color: #999bbc;
+  margin-right: auto;
+}
+
+body.dark-mode .txn-payment-method {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: #888aaf;
+  margin-left: 10px;
+}
+
+body.dark-mode .txn-amount {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-left: auto;
+}
+
+body.dark-mode .txn.expense .txn-amount {
+  color: #d9534f;
+}
+
+body.dark-mode .txn.income .txn-amount {
+  color: #5ca161;
+}
+
+body.dark-mode .txn-description {
+  margin-top: 8px;
+  font-size: 0.88rem;
+  color: #aaaabb;
+  padding-left: 2px;
+}
+
+/* Summary Boxes */
+body.dark-mode .summary-boxes {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+body.dark-mode .summary {
+  padding: 15px;
+  border-radius: 8px;
+  color: #f0f0f0;
+  width: 150px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(58, 58, 80, 0.8);
+  background-color: #2a2a40;
+}
+
+body.dark-mode .balance-box {
+  background-color: #4caf50; /* Green */
+}
+
+body.dark-mode .income-box {
+  background-color: #3a7bd5; /* Blue shade consistent with buttons */
+}
+
+body.dark-mode .expense-box {
+  background-color: #d9534f; /* Red */
+}
+
+body.dark-mode .summary h3 {
+  margin-top: -5px;
+  margin-bottom: 30px;
+  font-size: 20px;
+  color: #cfd1f7;
+}
+
+body.dark-mode .summary p {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: -25px;
+}
+
+/* Pie Wrapper */
+body.dark-mode .pie-wrapper {
+  background-color: rgba(20, 30, 50, 0.7);
+  display: flex;
+  margin-top: -49px;
+  justify-content: left;
+  border-radius: 20px;
+}
