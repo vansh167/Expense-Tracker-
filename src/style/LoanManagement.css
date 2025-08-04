@@ -6,16 +6,17 @@
   padding: 24px 32px;
   border-radius: 12px;
   box-shadow: 0 8px 20px rgb(0 0 0 / 0.1);
-  color: #2c3e50;
+  color: hsl(210, 29%, 24%);
+  height:50%;
 }
 
 /* Form styling */
 #loanForm {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 32px;
-  max-height: 420px;
+  gap: 6px;
+  margin-bottom: 28px; 
+  height: 35%;
   overflow-y: auto;
 }
 
@@ -26,11 +27,12 @@
   font-weight: 600;
   font-size: 0.95rem;
   color: #34495e;
+
 }
 
 #loanForm input {
-  margin-top: 6px;
-  padding: 10px 14px;
+  margin-top: 3px;
+  padding: 8px 14px;
   font-size: 1rem;
   border: 1.5px solid #bdc3c7;
   border-radius: 8px;
@@ -140,4 +142,119 @@
   margin: 4px 0;
   color: #34495e;
   font-size: 0.95rem;
+}.footer {
+  background-color: #ffffff;
+  border-top: 2px solid #e0e0e0;
+  padding: 20px 25px;
+  margin-top: 30px;
+  border-radius: 8px;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.submitted-info {
+  background-color: #fdfdfd;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 6px;
+  max-width: 600px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.submitted-info h3 {
+  font-size: 1.25rem;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  color: #333;
+}
+
+.info-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.info-table td {
+  padding: 10px 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.info-table td:first-child {
+  font-weight: bold;
+  color: #444;
+  width: 40%;
+}
+
+.info-table td:last-child {
+  text-align: right;
+  color: #222;
+}
+/* LoanManagement.css */
+
+.submitted-inline {
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 15px 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  color: #333;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  user-select: text;
+}
+
+.submitted-inline strong {
+  color: #222;
+}
+
+/* Optional: style the separators (|) to have some spacing */
+.submitted-inline > *:not(:last-child)::after {
+  content: "|";
+  margin-left: 12px;
+  color: #aaa;
+}
+
+/* Remove the last separator */
+.submitted-inline > *:last-child::after {
+  content: "";
+}
+.submitted-grid {
+  display: flex;
+  gap: 30px;
+  padding: 15px 20px;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.submitted-item {
+  display: flex;
+  flex-direction: column;
+  min-width: 90px;
+  text-align: center;
+}
+
+.label {
+  font-size: 0.85rem;
+  color: #555;
+  margin-bottom: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #222;
+}
+
+.small-text {
+  font-size: 0.8rem;
+  color: #777;
+  margin-left: 4px;
 }
