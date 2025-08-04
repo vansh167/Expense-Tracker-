@@ -30,11 +30,11 @@ body.dark-mode {
 }
 
 /* Basic button style */
-button {
+/* button {
   padding: 5px;
   border-radius: 10px;
   border-style:"white";
   font-size: 14px;
   cursor: pointer;
   background-color: skyblue;
-}
+} */

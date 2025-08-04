@@ -41,7 +41,7 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
         </li>
        
         <li>
-          <Link to="/profile" className="sidebar-link">
+          <Link to="/payment" className="sidebar-link">
             <FiUser className="sidebar-icon" /> Payment
           </Link>
         </li>

@@ -166,7 +166,7 @@ const balance = income - expense;
             }
           />
    <Route
-  path="/profile"
+  path="/payment"
   element={
     <ProfileSettings
       currency={currency}
@@ -181,7 +181,7 @@ const balance = income - expense;
 />
 
           <Route
-            path="/profile"
+            path="/payment"
             element={
               <ProfileSettings
                 currency={currency}

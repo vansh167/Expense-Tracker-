@@ -234,3 +234,25 @@
 .dark-mode .empty-txn {
   color: #777;
 }
+.notifications-list {
+  margin-top: 15px;
+}
+
+.notification {
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.notification.error {
+  background-color: #ffe5e5;
+  color: #c0392b;
+  border: 1px solid #e74c3c;
+}
+
+.notification.success {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #4caf50;
+}
