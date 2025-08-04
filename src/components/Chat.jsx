@@ -27,8 +27,8 @@ const IncomeExpenseBarChart = ({ transactions, currency = '₹' }) => {
       <BarChart
         xAxis={[{ data: categories, scaleType: 'band' }]}
         series={[
-          { type: 'bar', data: incomeData, color: '#4caf50', label: 'Income' },
-          { type: 'bar', data: expenseData, color: '#f44336', label: 'Expense' },
+          { type: 'bar', data: incomeData, color: '#4caf4fb6', label: 'Income' },
+          { type: 'bar', data: expenseData, color: '#f44336a9', label: 'Expense' },
         ]}
         width={600}
         height={400}

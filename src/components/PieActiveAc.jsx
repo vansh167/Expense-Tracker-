@@ -24,8 +24,8 @@ const PieActiveArc = ({ transactions }) => {
 
   // Pie chart data
   const data = [
-    { label: 'Income', value: totalIncome, color: '#58bd5be5' },  // green
-    { label: 'Expense', value: totalExpense, color: '#fd5c53e8' }, // red
+    { label: 'Income', value: totalIncome, color: '#58bd5bad' },  // green
+    { label: 'Expense', value: totalExpense, color: '#fd5b53a6' }, // red
   ];
 
   return (
