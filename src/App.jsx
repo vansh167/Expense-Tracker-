@@ -175,7 +175,7 @@ const balance = income - expense;
       setUserProfile={setUserProfile}
       addTransaction={addTransaction}
       transactions={transactions}
-      balance={balance}  // <-- Add this line
+      balance={balance}
     />
   }
 />

@@ -4,7 +4,7 @@ import PieActiveArc from './PieActiveAc';
 import IncomeExpenseBarChart from './Chat';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable'; // ✅ Corrected
-import Settings from './settings';
+// import Settings from './settings';
 
 const Home = ({ transactions, deleteTransaction, currency }) => {
   const [selectedIndex, setSelectedIndex] = React.useState(null);
@@ -91,7 +91,6 @@ const Home = ({ transactions, deleteTransaction, currency }) => {
   return (
     <div className="home-container">
       <div className="pie-wrapper">
-        {/* Pass filtered transactions without transfers to charts */}
         <PieActiveArc transactions={filteredTransactions} />
         <IncomeExpenseBarChart transactions={filteredTransactions} />
       </div>
