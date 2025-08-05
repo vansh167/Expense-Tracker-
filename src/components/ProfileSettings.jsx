@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "../style/ProfileSettings.css";
 import NotificationBell from "../components/NotificationBell"; // or correct relative path
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 
 const TransferForm = ({ balance, addTransaction, transactions = [] }) => {
@@ -50,6 +52,37 @@ const TransferForm = ({ balance, addTransaction, transactions = [] }) => {
     setIfscCode("");
     setAmount("");
   };
+  const downloadPDF = () => {
+  const doc = new jsPDF();
+
+  doc.setFontSize(18);
+  doc.text("Recent Transactions", 14, 22);
+
+  const tableColumn = ["Date", "Description", "Amount (₹)"];
+  const tableRows = [];
+
+  transactions.slice(-5).reverse().forEach((txn) => {
+    const txnData = [
+      new Date(txn.date).toLocaleDateString(),
+      txn.description,
+      `₹${txn.amount.toFixed(2)}`
+    ];
+    tableRows.push(txnData);
+  });
+
+  if (tableRows.length === 0) {
+    doc.text("No transactions found.", 14, 30);
+  } else {
+    doc.autoTable({
+      head: [tableColumn],
+      body: tableRows,
+      startY: 30,
+    });
+  }
+
+  doc.save("transactions.pdf");
+};
+
 
   return (
     <div className="transfer-container">
@@ -90,7 +123,9 @@ const TransferForm = ({ balance, addTransaction, transactions = [] }) => {
       </div>
 
       <div className="mini-statement">
-        <h3>Recent Transactions</h3>
+    <h3>Recent Transactions</h3>
+<button onClick={downloadPDF} className="pdf-button">Download PDF</button>
+<div/>
         {transactions.length === 0 ? (
           <p className="empty-txn">No transactions yet.</p>
         ) : (

@@ -256,3 +256,16 @@
   color: #2e7d32;
   border: 1px solid #4caf50;
 }
+.pdf-button {
+  background-color: #4caf4fe5;
+  color: white;
+  padding: 7px 8px;
+  border: none;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.pdf-button:hover {
+  background-color: #45a049;
+}
