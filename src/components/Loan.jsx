@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import '../style/LoanManagement.css';
 
-const LoanManagement = () => {
+const LoanManagement = ({ onAddTransaction, currentUserEmail, currentBalance }) => {
+  const userKey = currentUserEmail || 'guest';
+
   const [formData, setFormData] = useState({
     loanType: '',
     term: '',
@@ -12,7 +14,16 @@ const LoanManagement = () => {
     endDate: '',
   });
 
-  const [loanHistory, setLoanHistory] = useState([]);
+  const [loanHistory, setLoanHistory] = useState(() => {
+    const saved = localStorage.getItem(`${userKey}_loanHistory`);
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [loanCompleteMessage, setLoanCompleteMessage] = useState('');
+
+  useEffect(() => {
+    localStorage.setItem(`${userKey}_loanHistory`, JSON.stringify(loanHistory));
+  }, [loanHistory, userKey]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -64,7 +75,20 @@ const LoanManagement = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    setLoanHistory((prevHistory) => [...prevHistory, { ...formData }]);
+    const loanAmountNum = parseFloat(formData.loanAmount);
+
+    if (loanAmountNum > 0 && onAddTransaction) {
+      onAddTransaction({
+        type: 'Income',
+        category: 'Loan',
+        amount: loanAmountNum,
+        description: `Loan taken: ${formData.loanType}`,
+        date: formData.startDate,
+        isTransfer: false,
+      });
+    }
+
+    setLoanHistory((prev) => [...prev, { ...formData, paidEMIs: 0 }]);
 
     setFormData({
       loanType: '',
@@ -75,6 +99,57 @@ const LoanManagement = () => {
       startDate: '',
       endDate: '',
     });
+  };
+
+  const handlePayEMI = (index) => {
+    const loan = loanHistory[index];
+    const emiAmount = parseFloat(loan.emi);
+    const term = parseInt(loan.term);
+    const paidEMIs = loan.paidEMIs || 0;
+
+    if (paidEMIs >= term) {
+      alert('All EMIs for this loan are already paid.');
+      return;
+    }
+
+    if (emiAmount > 0) {
+      if (currentBalance < emiAmount) {
+        alert(`Insufficient balance to pay EMI of ₹${emiAmount.toFixed(2)}.`);
+        return;
+      }
+
+      if (onAddTransaction) {
+        onAddTransaction({
+          type: 'Expense',
+          category: 'Loan EMI',
+          amount: emiAmount,
+          description: `EMI payment for ${loan.loanType}`,
+          date: new Date().toISOString().split('T')[0],
+          isTransfer: false,
+        });
+
+        const updatedLoans = [...loanHistory];
+        const updatedLoan = {
+          ...loan,
+          paidEMIs: paidEMIs + 1,
+        };
+
+        if (updatedLoan.paidEMIs >= term) {
+          // ✅ Remove completed loan
+          updatedLoans.splice(index, 1);
+
+          // ✅ Show loan completion message
+          setLoanCompleteMessage(`🎉 Your loan "${loan.loanType}" is complete!`);
+          setTimeout(() => setLoanCompleteMessage(''), 5000);
+        } else {
+          // Update the EMI count
+          updatedLoans[index] = updatedLoan;
+          alert(`EMI of ₹${emiAmount.toFixed(2)} paid for loan: ${loan.loanType} (${paidEMIs + 1}/${term})`);
+        }
+
+        setLoanHistory(updatedLoans);
+      }
+    }
   };
 
   return (
@@ -156,55 +231,88 @@ const LoanManagement = () => {
         </form>
       </div>
 
-      {/* Loan History */}
       <div className="historyPanel" style={{ marginTop: '2rem' }}>
         <h2>Loan History</h2>
+
+        {loanCompleteMessage && (
+          <div
+            style={{
+              backgroundColor: '#d4edda',
+              color: '#155724',
+              padding: '10px',
+              borderRadius: '6px',
+              marginBottom: '1rem',
+              fontWeight: '600',
+            }}
+          >
+            {loanCompleteMessage}
+          </div>
+        )}
+
         {loanHistory.length === 0 && <p>No loans submitted yet.</p>}
 
-        {loanHistory.map((loan, index) => (
-          <div key={index} className="submitted-grid" style={{ marginBottom: '1rem' }}>
-            <div className="submitted-item">
-              <div className="label">Loan Type</div>
-              <div className="value">{loan.loanType}</div>
-            </div>
+        {loanHistory.map((loan, index) => {
+          const paidEMIs = loan.paidEMIs || 0;
+          const term = parseInt(loan.term);
+          const emiAmount = parseFloat(loan.emi);
 
-            <div className="submitted-item">
-              <div className="label">Term</div>
-              <div className="value">
-                {loan.term} <span className="small-text">months</span>
+          return (
+            <div key={index} className="submitted-grid" style={{ marginBottom: '1rem' }}>
+              <div className="submitted-item">
+                <div className="label">Loan Type</div>
+                <div className="value">{loan.loanType}</div>
+              </div>
+
+              <div className="submitted-item">
+                <div className="label">Term</div>
+                <div className="value">
+                  {loan.term} <span className="small-text">months</span>
+                </div>
+              </div>
+
+              <div className="submitted-item">
+                <div className="label">Interest Rate</div>
+                <div className="value">{loan.interestRate}%</div>
+              </div>
+
+              <div className="submitted-item">
+                <div className="label">Loan Amount</div>
+                <div className="value">₹{parseFloat(loan.loanAmount).toFixed(2)}</div>
+              </div>
+
+              <div className="submitted-item">
+                <div className="label">EMI</div>
+                <div className="value">₹{loan.emi}</div>
+              </div>
+
+              <div className="submitted-item">
+                <div className="label">Start Date</div>
+                <div className="value">{loan.startDate}</div>
+              </div>
+
+              <div className="submitted-item">
+                <div className="label">End Date</div>
+                <div className="value">{loan.endDate}</div>
+              </div>
+
+              <div className="submitted-item">
+                <button
+                  onClick={() => handlePayEMI(index)}
+                  disabled={paidEMIs >= term || currentBalance < emiAmount}
+                  title={
+                    paidEMIs >= term
+                      ? 'All EMIs paid'
+                      : currentBalance < emiAmount
+                      ? 'Insufficient balance to pay EMI'
+                      : ''
+                  }
+                >
+                  💳Pay EMI
+                </button>
               </div>
             </div>
-
-            <div className="submitted-item">
-              <div className="label">Interest Rate</div>
-              <div className="value">{loan.interestRate}%</div>
-            </div>
-
-            <div className="submitted-item">
-              <div className="label">Loan Amount</div>
-              <div className="value">₹{parseFloat(loan.loanAmount).toFixed(2)}</div>
-            </div>
-
-            <div className="submitted-item">
-              <div className="label">EMI</div>
-              <div className="value">₹{loan.emi}</div>
-            </div>
-
-            <div className="submitted-item">
-              <div className="label">Start Date</div>
-              <div className="value">{loan.startDate}</div>
-            </div>
-
-            <div className="submitted-item">
-              <div className="label">End Date</div>
-              <div className="value">{loan.endDate}</div>
-            </div>
-
-            <div className="submitted-item">
-              <button>💳Pay EMI</button>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

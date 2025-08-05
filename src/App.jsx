@@ -96,7 +96,7 @@ const App = () => {
   const deleteTransaction = (index) => {
     setTransactions(prev => prev.filter((_, i) => i !== index));
   };
-
+ const LoanManagment =({})
   // If not logged in
   if (!user) {
     return (
@@ -146,7 +146,12 @@ const balance = income - expense;
           />
           <Route 
           path="/loan"
-          element={<LoanManagement/>}
+           element={<LoanManagement
+  onAddTransaction={addTransaction}
+  currentUserEmail={user?.email}
+  currentBalance={balance}
+/>
+}
           />
 
         
