@@ -12,9 +12,8 @@ const LoanManagement = () => {
     endDate: '',
   });
 
-  const [submittedData, setSubmittedData] = useState(null);
+  const [loanHistory, setLoanHistory] = useState([]);
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -23,28 +22,31 @@ const LoanManagement = () => {
     }));
   };
 
-  // Calculate EMI automatically
+  const calculateFlatEMI = (principal, annualRate, months) => {
+    const interest = principal * (annualRate / 100) * (months / 12);
+    const totalPayable = principal + interest;
+    return totalPayable / months;
+  };
+
   useEffect(() => {
-    const { loanAmount, interestRate, term } = formData;
-    if (loanAmount && interestRate && term) {
-      const principal = parseFloat(loanAmount);
-      const monthlyRate = parseFloat(interestRate) / 12 / 100;
-      const months = parseInt(term);
+    const principal = parseFloat(formData.loanAmount);
+    const annualRate = parseFloat(formData.interestRate);
+    const months = parseInt(formData.term);
 
-      const emi =
-        monthlyRate === 0
-          ? principal / months
-          : (principal * monthlyRate * Math.pow(1 + monthlyRate, months)) /
-            (Math.pow(1 + monthlyRate, months) - 1);
-
+    if (!isNaN(principal) && !isNaN(annualRate) && !isNaN(months) && months > 0) {
+      const emi = calculateFlatEMI(principal, annualRate, months);
       setFormData((prev) => ({
         ...prev,
         emi: emi.toFixed(2),
       }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        emi: '',
+      }));
     }
   }, [formData.loanAmount, formData.interestRate, formData.term]);
 
-  // Calculate end date automatically
   useEffect(() => {
     const { startDate, term } = formData;
     if (startDate && term) {
@@ -59,12 +61,11 @@ const LoanManagement = () => {
     }
   }, [formData.startDate, formData.term]);
 
-  // Submit form
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSubmittedData({ ...formData });
 
-    // Clear form
+    setLoanHistory((prevHistory) => [...prevHistory, { ...formData }]);
+
     setFormData({
       loanType: '',
       term: '',
@@ -79,9 +80,10 @@ const LoanManagement = () => {
   return (
     <div className="container" style={{ marginLeft: '25%', maxWidth: '75vw' }}>
       <div className="formPanel">
+        <h2>Apply for Loan</h2>
         <form id="loanForm" onSubmit={handleSubmit}>
           <label>
-            Loan Type:
+            Loan Type (e.g. Home):
             <input
               type="text"
               name="loanType"
@@ -92,7 +94,7 @@ const LoanManagement = () => {
           </label>
 
           <label>
-            Term (months):
+            Term (in months):
             <input
               type="number"
               name="term"
@@ -104,7 +106,7 @@ const LoanManagement = () => {
           </label>
 
           <label>
-            Interest Rate (%):
+            Interest Rate (% annual):
             <input
               type="number"
               name="interestRate"
@@ -117,7 +119,7 @@ const LoanManagement = () => {
           </label>
 
           <label>
-            Loan Amount:
+            Loan Amount (in ₹):
             <input
               type="number"
               name="loanAmount"
@@ -130,7 +132,7 @@ const LoanManagement = () => {
           </label>
 
           <label>
-            EMI:
+            EMI (auto-calculated):
             <input type="number" name="emi" value={formData.emi} readOnly />
           </label>
 
@@ -146,7 +148,7 @@ const LoanManagement = () => {
           </label>
 
           <label>
-            Ending Date:
+            Ending Date (auto-filled):
             <input type="date" name="endDate" value={formData.endDate} readOnly />
           </label>
 
@@ -154,52 +156,57 @@ const LoanManagement = () => {
         </form>
       </div>
 
-      <div className="historyPanel">{/* Future loan history */}</div>
+      {/* Loan History */}
+      <div className="historyPanel" style={{ marginTop: '2rem' }}>
+        <h2>Loan History</h2>
+        {loanHistory.length === 0 && <p>No loans submitted yet.</p>}
 
- 
-  {submittedData && (
-    <div className="submitted-grid">
-      <div className="submitted-item">
-        <div className="label">Loan Type</div>
-        <div className="value">{submittedData.loanType}</div>
-      </div>
+        {loanHistory.map((loan, index) => (
+          <div key={index} className="submitted-grid" style={{ marginBottom: '1rem' }}>
+            <div className="submitted-item">
+              <div className="label">Loan Type</div>
+              <div className="value">{loan.loanType}</div>
+            </div>
 
-      <div className="submitted-item">
-        <div className="label">Term</div>
-        <div className="value">
-          {submittedData.term} <span className="small-text">months</span>
-        </div>
-      </div>
+            <div className="submitted-item">
+              <div className="label">Term</div>
+              <div className="value">
+                {loan.term} <span className="small-text">months</span>
+              </div>
+            </div>
 
-      <div className="submitted-item">
-        <div className="label">Interest Rate</div>
-        <div className="value">{submittedData.interestRate}%</div>
-      </div>
+            <div className="submitted-item">
+              <div className="label">Interest Rate</div>
+              <div className="value">{loan.interestRate}%</div>
+            </div>
 
-      <div className="submitted-item">
-        <div className="label">Loan Amount</div>
-        <div className="value">₹{parseFloat(submittedData.loanAmount).toFixed(2)}</div>
-      </div>
+            <div className="submitted-item">
+              <div className="label">Loan Amount</div>
+              <div className="value">₹{parseFloat(loan.loanAmount).toFixed(2)}</div>
+            </div>
 
-      <div className="submitted-item">
-        <div className="label">EMI</div>
-        <div className="value">₹{submittedData.emi}</div>
-      </div>
+            <div className="submitted-item">
+              <div className="label">EMI</div>
+              <div className="value">₹{loan.emi}</div>
+            </div>
 
-      <div className="submitted-item">
-        <div className="label">Start Date</div>
-        <div className="value">{submittedData.startDate}</div>
-      </div>
+            <div className="submitted-item">
+              <div className="label">Start Date</div>
+              <div className="value">{loan.startDate}</div>
+            </div>
 
-      <div className="submitted-item">
-        <div className="label">End Date</div>
-        <div className="value">{submittedData.endDate}</div>
+            <div className="submitted-item">
+              <div className="label">End Date</div>
+              <div className="value">{loan.endDate}</div>
+            </div>
+
+            <div className="submitted-item">
+              <button>💳Pay EMI</button>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
-  )}
-</div>
-
-    
   );
 };
 
