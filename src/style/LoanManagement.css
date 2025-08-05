@@ -1,5 +1,5 @@
 .container {
-  max-width: 480px;
+  max-width: 440px;
   margin: 1rem auto;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #ffffff; /* clean white */
@@ -7,7 +7,7 @@
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   color: #2c3e50; /* dark slate */
-  height: 64%;
+  height:auto;
 }
 
 /* Form styling */
@@ -16,12 +16,11 @@
   flex-wrap: wrap;
   gap: 9px;
   margin-bottom: 20px;
-  /* height: 30%; */
   overflow-y: auto;
 }
 
 #loanForm label {
-  flex: 1 1 48%;
+  flex:  33%;
   display: flex;
   flex-direction: column;
   font-weight: 600;
@@ -31,7 +30,7 @@
 
 #loanForm input {
   margin-top: 0px;
-  padding: 8px 10px;
+  padding: 8px 6px;
   font-size: 1rem;
   border: 1.5px solid #ccc;
   border-radius: 6px;
@@ -48,11 +47,11 @@
 }
 
 #loanForm button {
-  flex-basis: 100%;
-  padding: 14px 0;
+  flex-basis:100%;
+  padding: 10px 0;
   background-color: #2980b9;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   color: white;
   font-weight: 700;
   font-size: 1.1rem;
@@ -78,7 +77,7 @@
 
 .transactionHistory h3 {
   margin-top: 0;
-  margin-bottom: 18px;
+  margin-bottom: 8px;
   font-weight: 700;
   font-size: 1.3rem;
   color: #34495e;
@@ -249,7 +248,6 @@
   display: flex;
   flex-direction: column;
   min-width: 90px;
-  text-align: center;
   color: #2c3e50;
 }
 
@@ -272,15 +270,17 @@
   color: #7f8c8d;
   margin-left: 4px;
 }
+
 .submitted-item button{
   background-color: rgba(49, 136, 170, 0.911);
   color: rgb(250, 250, 250);
   padding: 6px;
   border-radius: 15px;
   border-color: transparent;
-  margin-top: 7px;
-  font-size:14px;
-  font-weight: 580;
+  margin-top: 2px;
+  font-size:13px;
+  font-weight: 590;
+  height: 30px;
 }
 .submitted-item button :hover{
   background-color: rgb(95, 188, 231);

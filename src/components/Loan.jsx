@@ -20,6 +20,7 @@ const LoanManagement = ({ onAddTransaction, currentUserEmail, currentBalance }) 
   });
 
   const [loanCompleteMessage, setLoanCompleteMessage] = useState('');
+  const [editIndex, setEditIndex] = useState(null);
 
   useEffect(() => {
     localStorage.setItem(`${userKey}_loanHistory`, JSON.stringify(loanHistory));
@@ -76,20 +77,36 @@ const LoanManagement = ({ onAddTransaction, currentUserEmail, currentBalance }) 
     e.preventDefault();
 
     const loanAmountNum = parseFloat(formData.loanAmount);
+    if (loanAmountNum <= 0) return;
 
-    if (loanAmountNum > 0 && onAddTransaction) {
-      onAddTransaction({
-        type: 'Income',
-        category: 'Loan',
-        amount: loanAmountNum,
-        description: `Loan taken: ${formData.loanType}`,
-        date: formData.startDate,
-        isTransfer: false,
+    if (editIndex !== null) {
+      // Update existing loan
+      setLoanHistory((prev) => {
+        const updated = [...prev];
+        updated[editIndex] = { ...formData, paidEMIs: prev[editIndex].paidEMIs || 0 };
+        return updated;
       });
+      setEditIndex(null);
+      setLoanCompleteMessage(`✏️ Loan "${formData.loanType}" updated successfully!`);
+      setTimeout(() => setLoanCompleteMessage(''), 4000);
+    } else {
+      // Add new loan & transaction
+      if (onAddTransaction) {
+        onAddTransaction({
+          type: 'Income',
+          category: 'Loan',
+          amount: loanAmountNum,
+          description: `Loan taken: ${formData.loanType}`,
+          date: formData.startDate,
+          isTransfer: false,
+        });
+      }
+      setLoanHistory((prev) => [...prev, { ...formData, paidEMIs: 0 }]);
+      setLoanCompleteMessage(`✅ Loan "${formData.loanType}" added successfully!`);
+      setTimeout(() => setLoanCompleteMessage(''), 4000);
     }
 
-    setLoanHistory((prev) => [...prev, { ...formData, paidEMIs: 0 }]);
-
+    // Reset form
     setFormData({
       loanType: '',
       term: '',
@@ -135,10 +152,10 @@ const LoanManagement = ({ onAddTransaction, currentUserEmail, currentBalance }) 
         };
 
         if (updatedLoan.paidEMIs >= term) {
-          // ✅ Remove completed loan
+          // Remove completed loan
           updatedLoans.splice(index, 1);
 
-          // ✅ Show loan completion message
+          // Show loan completion message
           setLoanCompleteMessage(`🎉 Your loan "${loan.loanType}" is complete!`);
           setTimeout(() => setLoanCompleteMessage(''), 5000);
         } else {
@@ -152,10 +169,29 @@ const LoanManagement = ({ onAddTransaction, currentUserEmail, currentBalance }) 
     }
   };
 
+  const handleEdit = (index) => {
+    const loanToEdit = loanHistory[index];
+    setFormData({ ...loanToEdit });
+    setEditIndex(index);
+  };
+
+  const handleCancelEdit = () => {
+    setEditIndex(null);
+    setFormData({
+      loanType: '',
+      term: '',
+      interestRate: '',
+      loanAmount: '',
+      emi: '',
+      startDate: '',
+      endDate: '',
+    });
+  };
+
   return (
     <div className="container" style={{ marginLeft: '25%', maxWidth: '75vw' }}>
       <div className="formPanel">
-        <h2>Apply for Loan</h2>
+        <h2>{editIndex !== null ? 'Edit Loan' : 'Apply for Loan'}</h2>
         <form id="loanForm" onSubmit={handleSubmit}>
           <label>
             Loan Type (e.g. Home):
@@ -227,7 +263,15 @@ const LoanManagement = ({ onAddTransaction, currentUserEmail, currentBalance }) 
             <input type="date" name="endDate" value={formData.endDate} readOnly />
           </label>
 
-          <button type="submit">Submit</button>
+          <button type="submit" disabled={editIndex !== null && !formData.loanType}>
+            {editIndex !== null ? 'Update Loan' : 'Submit'}
+          </button>
+
+          {editIndex !== null && (
+            <button type="button" onClick={handleCancelEdit} style={{ marginLeft: '1rem' }}>
+              Cancel Edit
+            </button>
+          )}
         </form>
       </div>
 
@@ -296,7 +340,7 @@ const LoanManagement = ({ onAddTransaction, currentUserEmail, currentBalance }) 
               </div>
 
               <div className="submitted-item">
-                <button
+                <button   style={{ marginTop: '-6px' }}
                   onClick={() => handlePayEMI(index)}
                   disabled={paidEMIs >= term || currentBalance < emiAmount}
                   title={
@@ -308,6 +352,15 @@ const LoanManagement = ({ onAddTransaction, currentUserEmail, currentBalance }) 
                   }
                 >
                   💳Pay EMI
+                </button>
+             
+
+                <button
+                  onClick={() => handleEdit(index)}
+                  disabled={editIndex !== null}
+                  title={editIndex !== null ? 'Finish current edit first' : 'Edit Loan'}
+                >
+                  ✏️ Edit
                 </button>
               </div>
             </div>
