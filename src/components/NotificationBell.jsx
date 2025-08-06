@@ -12,7 +12,7 @@ const NotificationBell = ({ notifications }) => {
         style={{ fontSize: "24px", cursor: "pointer",backgroundColor:"transparent", borderColor:"transparent" }}
         aria-label="Notifications"
       >
-        🔔
+        <img src="/images/bell.gif" style={{height:"40px"}}/>
         {notifications.length > 0 && (
           <span
             style={{
