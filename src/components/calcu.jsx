@@ -105,7 +105,7 @@ function Calculator({ transactions = sampleTransactions }) {
                       className="mycalc-income-tile"
                       style={{ color: '#2a9d8f', fontWeight: '700', fontSize: '0.8rem' }}
                     >
-                      +₹{dayIncome}
+                      ₹{dayIncome}
                     </div>
                   )}
                   {dayExpense > 0 && (
@@ -113,7 +113,7 @@ function Calculator({ transactions = sampleTransactions }) {
                       className="mycalc-expense-tile"
                       style={{ color: '#e63946', fontWeight: '700', fontSize: '0.8rem' }}
                     >
-                      -₹{dayExpense}
+                      ₹{dayExpense}
                     </div>
                   )}
                 </div>

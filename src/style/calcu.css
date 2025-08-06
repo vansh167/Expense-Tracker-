@@ -1,7 +1,7 @@
 /* Wrapper positioning */
 .mycalc-wrapper {
   display: flex;
-  gap: 17%;
+  gap:auto;
   margin-left: 25%;
   flex-wrap: wrap;
   align-items: flex-start;
@@ -23,7 +23,7 @@
 .mycalc-calendar {
   border-radius: 6px;
   border: 1px solid #ccc;
-  background-color: var(--calendar-bg, #fff);
+  background-color: var(--calendar-bg, #ffffff);
   color: var(--calendar-text, #222);
   font-family: inherit;
 }
@@ -113,7 +113,7 @@
 .mycalc-calculator-section {
   margin-top: 104px;
   padding: 20px;
-  background-color: var(--calc-bg, #f9f9f9);
+  background-color: var(--calc-bg, #b1e5fa);
   color: var(--calc-text, #222);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);

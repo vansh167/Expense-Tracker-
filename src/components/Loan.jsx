@@ -205,7 +205,7 @@ const LoanManagement = ({ onAddTransaction, currentUserEmail, currentBalance }) 
           </label>
 
           <label>
-            Term (in months):
+            Term (in months): 
             <input
               type="number"
               name="term"
