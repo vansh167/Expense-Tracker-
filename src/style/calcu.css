@@ -113,7 +113,7 @@
 .mycalc-calculator-section {
   margin-top: 104px;
   padding: 20px;
-  background-color: var(--calc-bg, #b1e5fa);
+  background-color: #bcd5fa;
   color: var(--calc-text, #222);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
