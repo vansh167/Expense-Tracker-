@@ -189,7 +189,7 @@ const LoanManagement = ({ onAddTransaction, currentUserEmail, currentBalance }) 
   };
 
   return (
-    <div className="container" style={{ marginLeft: '25%', maxWidth: '75vw' }}>
+    <div className="container" style={{ marginLeft: '21%', maxWidth: '75vw' }}>
       <div className="formPanel">
         <h2>{editIndex !== null ? 'Edit Loan' : 'Apply for Loan'}</h2>
         <form id="loanForm" onSubmit={handleSubmit}>
