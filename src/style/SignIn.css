@@ -4,14 +4,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #e3f2fd, #fce4ec);
+  background: linear-gradient(135deg, rgb(165, 215, 251), #fdc5d7);
   padding: 20px;
   font-family: 'Segoe UI', sans-serif;
 }
 
 /* === Form Box Styling === */
 .auth-form {
-  background-color: #fff;
+  background-color: #ffffff;
   padding: 35px 30px;
   border-radius: 12px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
