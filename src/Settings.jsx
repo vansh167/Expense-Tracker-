@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../style/Settings.css';
+import '../src/style/Settings.css'; // Ensure you have this CSS file for styling
 
 const Settings = ({
   incomeCategories,

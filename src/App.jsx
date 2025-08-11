@@ -4,7 +4,7 @@ import { UserContext, UserProvider } from './components/UserContext';
 import Home from './components/Home';
 import ExpenseTracker from './components/ExpenseTracker';
 import Sidebar from './components/Sidebar';
-import Settings from '../components/Settings';
+import Settings from './Settings.jsx';
 import Calculator from './components/calcu';
 import ProfileSettings from './components/ProfileSettings';
 import SignIn from './components/SignIn';
