@@ -5,7 +5,7 @@ import Home from './components/Home';
 import ExpenseTracker from './components/ExpenseTracker';
 import Sidebar from './components/Sidebar';
 import Settings from './Settings.jsx';
-import Calculator from './components/calcu';
+import Calculator from './components/Calcu';
 import ProfileSettings from './components/ProfileSettings';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
