@@ -4,7 +4,7 @@ import { UserContext, UserProvider } from './components/UserContext';
 import Home from './components/Home';
 import ExpenseTracker from './components/ExpenseTracker';
 import Sidebar from './components/Sidebar';
-import Settings from './components/Settings.jsx';
+
 
 import ProfileSettings from './components/ProfileSettings';
 import SignIn from './components/SignIn';
@@ -13,6 +13,7 @@ import './style/App.css';
 import '../src/components/ProfileSettings';
 import LoanManagement from './components/Loan';
 import Calculator from './components/Calculator.jsx';
+import Settings from './components/Settings.jsx';
 
 const initialIncomeCategories = ['Salary', 'Freelance', 'Investments'];
 const initialExpenseCategories = ['Food', 'Transport', 'Shopping', 'Bills'];
