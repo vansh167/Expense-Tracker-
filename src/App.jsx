@@ -4,14 +4,15 @@ import { UserContext, UserProvider } from './components/UserContext';
 import Home from './components/Home';
 import ExpenseTracker from './components/ExpenseTracker';
 import Sidebar from './components/Sidebar';
-import Settings from './Settings.jsx';
-import Calculator from './components/Calcu';
+import Settings from './components/Settings.jsx';
+
 import ProfileSettings from './components/ProfileSettings';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import './style/App.css';
 import '../src/components/ProfileSettings';
 import LoanManagement from './components/Loan';
+import Calculator from './components/Calculator.jsx';
 
 const initialIncomeCategories = ['Salary', 'Freelance', 'Investments'];
 const initialExpenseCategories = ['Food', 'Transport', 'Shopping', 'Bills'];
@@ -159,6 +160,7 @@ const balance = income - expense;
             path="/calculator"
             element={<Calculator transactions={transactions} />}
           />
+          
           <Route
             path="/Settings"
             element={
