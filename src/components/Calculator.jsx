@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { format, parseISO, isValid } from 'date-fns';
-import '../style/Calculator.css'; 
+import '../style/Calculator.css';
+import { Parser } from 'expr-eval'; // <- added
 
 function safeParseDate(dateString) {
   if (!dateString) return null;
@@ -36,15 +37,28 @@ function Calculator({ transactions = sampleTransactions }) {
     .reduce((sum, tx) => sum + tx.amount, 0);
 
   const handleClick = (value) => {
-    setExpression(prev => prev + value);
+    // ensure expression is always a string
+    setExpression(prev => (prev === '0' ? String(value) : prev + String(value)));
   };
 
   const calculate = () => {
+    const expr = expression.trim();
+    if (!expr) {
+      setExpression('0');
+      return;
+    }
+
     try {
-      const result = eval(expression); // Use math parser in production
-      setExpression(result.toString());
-    } catch {
+      // use expr-eval instead of eval
+      const parser = new Parser();
+      const result = parser.evaluate(expr);
+      // Display result as string; allow further calculations by keeping result as expression
+      setExpression(String(result));
+    } catch (err) {
+      // on parse/eval error, show Error briefly
       setExpression('Error');
+      // optional: clear after 1.5s so user can continue — comment out if you don't want this behavior
+      setTimeout(() => setExpression(''), 1500);
     }
   };
 
@@ -73,8 +87,6 @@ function Calculator({ transactions = sampleTransactions }) {
 
   return (
     <div className="mycalc-container">
-
-
       <div className="mycalc-wrapper">
         {/* Calendar Section */}
         <div className="mycalc-calendar-section">
@@ -124,22 +136,21 @@ function Calculator({ transactions = sampleTransactions }) {
           <div className="mycalc-transaction-list">
             <h3 className="mycalc-transaction-title">Transactions on {formattedDate}:</h3>
             {filteredTransactions.length > 0 ? (
-             <ul className="mycalc-transaction-items">
-  {filteredTransactions.map((tx, idx) => (
-    <li
-      key={tx.id || idx}
-      className={`mycalc-transaction-item ${
-        tx.type === 'Income' ? 'transaction-income-bg' : 'transaction-expense-bg'
-      }`}
-    >
-      <span>{tx.description} ({tx.category})</span>
-      <span className="transaction-amount">
-        ₹{tx.amount}
-      </span>
-    </li>
-  ))}
-</ul>
-
+              <ul className="mycalc-transaction-items">
+                {filteredTransactions.map((tx, idx) => (
+                  <li
+                    key={tx.id || idx}
+                    className={`mycalc-transaction-item ${
+                      tx.type === 'Income' ? 'transaction-income-bg' : 'transaction-expense-bg'
+                    }`}
+                  >
+                    <span>{tx.description} ({tx.category})</span>
+                    <span className="transaction-amount">
+                      ₹{tx.amount}
+                    </span>
+                  </li>
+                ))}
+              </ul>
             ) : (
               <p style={{ color: '#e76f51', fontWeight: '600' }}>
                 No transactions for this date. Try another day!
@@ -169,7 +180,6 @@ function Calculator({ transactions = sampleTransactions }) {
 
         {/* Calculator Section */}
         <div className="mycalc-calculator-section">
-         
           <div className="mycalc-calculator-display" aria-live="polite" style={{ fontSize: '2rem' }}>
             {expression || '0'}
           </div>
