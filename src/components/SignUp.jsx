@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { UserContext } from './UserContext';
 import '../style/SignIn.css';
 import { FiMail, FiLock } from 'react-icons/fi';
+import titleImg from '../images/Title.png';
 
 const SignUp = () => {
   const { setUser } = useContext(UserContext);
@@ -47,7 +48,7 @@ const SignUp = () => {
   return (
     <div className="auth-container">
       <form className="auth-form" onSubmit={handleSubmit}>
-        <img src="/images/Title.png" alt="Logo" className="auth-logo" />
+        <img src={titleImg} alt="Logo" className="auth-logo" />
         <h2>Create an Account</h2>
         {error && <p className="auth-error">{error}</p>}
 
