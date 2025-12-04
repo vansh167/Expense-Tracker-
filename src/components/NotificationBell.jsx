@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../style/Notification.css";
-
+import bell from "../images/bell.gif"
 
 const NotificationBell = ({ notifications }) => {
   const [open, setOpen] = useState(false);
@@ -12,7 +12,7 @@ const NotificationBell = ({ notifications }) => {
         style={{ fontSize: "24px", cursor: "pointer",backgroundColor:"transparent", borderColor:"transparent" }}
         aria-label="Notifications"
       >
-        <img src="/images/bell.gif" style={{height:"40px"}}/>
+        <img src={bell} style={{height:"40px"}}/>
         {notifications.length > 0 && (
           <span
             style={{

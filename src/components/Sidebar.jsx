@@ -13,7 +13,7 @@ import {
 import { AiOutlineCalendar } from 'react-icons/ai';
 import { UserContext } from './UserContext'; 
 import '../style/Side.css';
-
+import logo1 from "../images/logo1.png"
 const Sidebar = ({ darkMode, toggleDarkMode }) => {
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
 
   return (
     <div className="sidebar">
-      <img src="/images/logo1.png" alt="Logo" className="sidebar-logo" />
+      <img src={logo1} alt="Logo" className="sidebar-logo" />
 
       <ul className="sidebar-list">
         <li>
