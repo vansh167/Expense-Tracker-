@@ -21,7 +21,7 @@ const SignIn = () => {
 
     if (existingUser) {
       setUser(existingUser);
-      navigate('/');
+      navigate('/expense-tracker');
     } else {
       setError('Invalid email or password');
     }
