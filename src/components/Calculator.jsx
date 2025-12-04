@@ -3,7 +3,7 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { format, parseISO, isValid } from 'date-fns';
 import '../style/Calculator.css';
-import { Parser } from 'expr-eval'; // <- added
+import { Parser } from 'expr-eval'; 
 
 function safeParseDate(dateString) {
   if (!dateString) return null;
